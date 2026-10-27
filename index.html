@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Python: The Small Things That Matter (all 12)</title>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#EAF0F5;--panel:#FFFFFF;--ink:#0E1A2B;--mute:#51627A;--store:#1456D6;--store-soft:#D9E5FB;--bad:#B3261E;--ok:#127A4B;--line:#C5D2E0;--glow:rgba(20,86,214,.18);--glow2:rgba(18,122,75,.13);--shadow:rgba(14,26,43,.38);
+color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0B1320;--panel:#121E31;--ink:#EAF1FB;--mute:#9DB0C9;--bad:#FF8A80;--ok:#5FD39B;--line:#243653;--shadow:#000;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#0B1320;--panel:#121E31;--ink:#EAF1FB;--mute:#9DB0C9;--bad:#FF8A80;--ok:#5FD39B;--line:#243653;--shadow:#000;color-scheme:dark}
+*{box-sizing:border-box}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:radial-gradient(80% 60% at 50% 0%,var(--glow),transparent 62%),var(--bg);color:var(--ink);font-family:"Manrope",system-ui,"Segoe UI",Helvetica,Arial,sans-serif;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:16px}
+.tabs{width:min(100%,960px);display:flex;gap:8px;overflow-x:auto;padding:2px 0 6px}
+.tabs button,.ctl button{font:inherit;font-weight:700;font-size:14px;white-space:nowrap;color:var(--ink);background:var(--panel);border:1px solid var(--line);border-radius:999px;padding:.4em 1em;cursor:pointer}
+.tabs button.on{background:var(--store);border-color:var(--store);color:#fff}
+.ctl{display:flex;gap:10px}
+button:focus-visible{outline:3px solid var(--store);outline-offset:2px}
+.stage{width:min(100%,960px);aspect-ratio:16/9;background:radial-gradient(120% 90% at 88% 0%,var(--glow),transparent 56%),radial-gradient(90% 80% at 0% 100%,var(--glow2),transparent 58%),var(--panel);border:1px solid var(--line);border-radius:26px;box-shadow:0 34px 70px -34px var(--shadow);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2.2vmin;overflow:hidden;position:relative;padding:3%}
+.stage::before{content:"";position:absolute;top:3%;left:2.6%;width:10px;height:10px;border-radius:50%;background:#FF6B6B;box-shadow:18px 0 0 #FFC857,36px 0 0 #4ADE80}
+.stage::after{content:"Py";position:absolute;right:3%;bottom:-16%;font-family:ui-monospace,Menlo,monospace;font-weight:800;font-size:clamp(160px,30vw,320px);line-height:1;color:var(--store);opacity:.07;pointer-events:none}
+.stage>*{position:relative;z-index:1;max-width:94%}
+code,.code{font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace}
+.code{font-size:clamp(28px,7.4vw,76px);font-weight:700;white-space:pre-wrap;text-align:left;background:linear-gradient(90deg,var(--ink) 30%,var(--store));-webkit-background-clip:text;background-clip:text;color:transparent}
+.code.sm{font-size:clamp(18px,4.2vw,42px)}
+.eq{color:var(--store);background:var(--store-soft);border-radius:8px;box-shadow:inset 0 0 0 2px var(--store);-webkit-text-fill-color:var(--store)}
+.badge{font-size:clamp(14px,2.6vw,26px);font-weight:700;padding:.3em .9em;border-radius:999px;border:2px solid currentColor;background:color-mix(in srgb,currentColor 12%,transparent)}
+.bad{color:var(--bad)}.ok{color:var(--ok)}
+.out{min-width:30vmin;padding:1.4vmin 2.6vmin;border:2px dashed var(--line);border-radius:14px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:clamp(18px,4vw,40px);font-weight:700;white-space:pre-wrap;text-align:center}
+.out small{display:block;font-family:"Manrope",sans-serif;font-size:clamp(11px,1.9vw,19px);color:var(--mute);font-weight:500}
+.out.err{border:2px solid var(--bad);color:var(--bad);font-size:clamp(12px,2.3vw,24px);text-align:left}
+.steps{display:grid;gap:1.2vmin;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:clamp(13px,2.5vw,26px);font-weight:700;white-space:pre-wrap}
+.steps>div{background:var(--store-soft);padding:.35em .9em;border-radius:12px;border-inline-start:5px solid var(--store)}
+.num{font-size:clamp(70px,20vw,200px);font-weight:800;line-height:.9;color:transparent;-webkit-text-stroke:3px var(--store)}
+.ttl{font-size:clamp(26px,6vw,60px);font-weight:800;text-align:center;line-height:1.1}
+.rule{font-size:clamp(15px,2.8vw,28px);font-weight:500;color:var(--mute);text-align:center}
+.line{height:6px;width:0;border-radius:3px;background:linear-gradient(90deg,var(--store),var(--ok));animation:grow 1s .5s ease-out forwards}
+@keyframes grow{to{width:min(60%,420px)}}
+.pop{animation:pop .55s cubic-bezier(.2,.9,.3,1.2) both;animation-delay:var(--d,0s)}
+@keyframes pop{from{opacity:0;transform:scale(.88) translateY(8px)}to{opacity:1;transform:none}}
+.cap{width:min(100%,960px);text-align:center;font-size:clamp(16px,2.6vw,26px);font-weight:700;min-height:2.6em;line-height:1.5}
+.bar{width:min(100%,960px);height:8px;background:var(--line);border-radius:4px;overflow:hidden}
+.bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--store),var(--ok))}
+#pp{background:var(--store);border-color:var(--store);color:#fff}
+.bar{position:relative;overflow:visible;cursor:pointer;touch-action:none;user-select:none}
+.bar::before{content:"";position:absolute;inset:-14px 0}
+.bar i{position:relative;border-radius:4px}
+.bar i::after{content:"";position:absolute;right:-9px;top:50%;width:18px;height:18px;margin-top:-9px;border-radius:50%;background:#fff;border:3px solid var(--store);box-shadow:0 2px 8px rgba(0,0,0,.35);transition:transform .15s}
+.bar:hover i::after,.bar.drag i::after{transform:scale(1.3)}
+.bar:focus-visible{outline:3px solid var(--store);outline-offset:8px}
+.tk{position:absolute;top:-3px;width:2px;height:14px;background:var(--mute);opacity:.45;border-radius:1px;pointer-events:none}
+body.hold .pop,body.hold .line{animation-play-state:paused}
+@media (prefers-reduced-motion:reduce){.pop,.line{animation-duration:.01s;animation-delay:0s}}
+</style>
+</head>
+<body>
+<div class="tabs" id="tabs"></div>
+<div class="stage" id="stage" aria-live="polite"></div>
+<div class="cap" id="cap"></div>
+<div class="bar"><i id="bar"></i></div>
+<div class="ctl"><button id="pp">⏸ Pause</button><button id="replay">Replay this lesson</button><button id="all">Play all from the start</button></div>
+<script>
+var L=[
+{t:'Parentheses ( )',k:'( )',r:'They mean “run it now”.',s:[
+{c:'print',b:['Only the name: nothing runs','bad'],cap:'Write print on its own, and nothing happens.'},
+{c:'print«(»"Hi"«)»',o:'Hi',cap:'Add parentheses and Python runs it. What’s inside is what you hand to it.'},
+{c:'print(«(»2 + 3«)» * 4)',o:'20',cap:'Parentheses also group math: the inside is calculated first.'}]},
+{t:'Quotes " "',k:'" "',r:'No quotes: a name. Quotes: text.',s:[
+{c:'print(Ali)',o:`NameError: name (Ali) is not defined`,e:1,cap:'Without quotes, Python looks for a variable named Ali. There isn’t one.'},
+{c:'print(«"»Ali«"»)',o:'Ali',cap:'With quotes, the content is text, and it prints as it is.'},
+{s:['print«(»"5" + "5"«)»  → 55  texts are joined','print«(»5 + 5«)»       → 10  numbers are added'],cap:'“5” is text, 5 is a number.'}]},
+{t:'The = sign',k:'=',r:'It stores, not “equals”.',s:[
+{c:'x «=» 5',b:['Stores 5 in x. It isn’t “equals”.','ok'],cap:'In Python, = is a storing command.'},
+{c:`x = 5\nx «=» x + 1\nprint(x)`,o:'6',cap:'The right side is calculated first (5 + 1 = 6), then saved in x. That’s why x = x + 1 is valid.'},
+{c:'print(x «==» 6)',o:'True',cap:'To ask “are they equal?”, use ==. A single = is already reserved for storing.'}]},
+{t:'Uppercase vs lowercase',k:'Aa',r:'A and a are different.',s:[
+{c:`Name = 5\nprint(name)`,o:`NameError: name (name) is not defined`,e:1,cap:'Name and name are two different names.'},
+{c:'print("Ali" == "ali")',o:'False',cap:'The same goes for text: “Ali” and “ali” are different.'},
+{c:'print("Ali".«lower()» == "ali".«lower()»)',o:'True',cap:'To ignore case when comparing, use .lower() on both.'}]},
+{t:'The # symbol',k:'#',r:'Python ignores everything after it.',s:[
+{c:'print("Hi")  «# a note»',o:'Hi',cap:'Everything after # on that line is ignored. Use it for notes.'},
+{c:`«# print("Bye")»\nprint("Hi")`,o:'Hi',cap:'Put # in front of a line to switch it off.'},
+{c:'print("# not a comment")',o:'# not a comment',cap:'A # inside quotes is just text.'}]},
+{t:'Reading errors',k:'Errors',r:'Read the last line first.',s:[
+{c:'print(Ali)',o:`Traceback (most recent call last):\n  ...\n«NameError: name (Ali) is not defined»`,e:1,cap:'Read the last line of the red message first.'},
+{s:['SyntaxError: wrong writing','NameError: unknown name','TypeError: wrong type','ValueError: wrong value'],cap:'Four common errors, each named for what went wrong.'},
+{s:[`print("Hi"       # «SyntaxError»: "(" was never closed`,`print(Ali)       # «NameError»: name 'Ali' is not defined`,`print("5" - 2)   # «TypeError»: "5" is text, 2 is a number`,`int("abc")       # «ValueError»: "abc" is not a whole number`],cap:'One example of each error, and what Python says about it.'},
+{c:'int("abc")',o:`ValueError: invalid literal for int() with base 10: 'abc'`,e:1,cap:'An error isn’t a punishment. It’s Python showing where it got stuck.'}]},
+{t:'Colon and spaces',k:':',r:'The colon opens a block.',s:[
+{c:`age = 12\nif age > 10«:»\n«    »print("Big")\nprint("Done")`,o:'Big\nDone',cap:'The colon opens a block, and 4 spaces show which lines belong to it.'},
+{c:`if age > 10:\nprint("Big")`,o:`IndentationError: expected an indented block after 'if' statement`,e:1,cap:'Python has no braces, so wrong spacing gives an IndentationError.'}]},
+{t:'Variable names',k:'Names',r:'Letters, digits and _ only.',s:[
+{s:['my_age = 12   ✓ good','2nd = 5       ✗ starts with a digit','my age = 12   ✗ has a space'],cap:'Use letters, digits and _. Don’t start with a digit, and don’t use spaces.'},
+{c:`sum = 10\nprint(sum([1, 2]))`,o:`TypeError: 'int' object is not callable`,e:1,cap:'Python’s own words (sum, str, type, input) are taken. After sum = 10, the real sum() breaks.'}]},
+{t:'Joining text with numbers',k:'+',r:'+ joins text with text only.',s:[
+{c:`age = 15\nprint("Age: " + age)`,o:`TypeError: can only concatenate str (not "int") to str`,e:1,cap:'+ joins text with text only.'},
+{s:['print("Age: " + «str(age)»)  → Age: 15','print("Age:"«,» age)        → Age: 15'],cap:'Convert the number with str(), or just use a comma in print.'},
+{c:'print("«Age»: ", age)',b:['A label inside text, not a variable name','ok'],cap:'The capital A is fine. It’s a word to print, not a name Python looks up.'}]},
+{t:'**, //, %',k:'** // %',r:'Power, whole part, remainder.',s:[
+{s:['2 ** 3  → 8     power','7 / 2   → 3.5   always a decimal','7 // 2  → 3     whole part only'],cap:'** is power, / always gives a decimal, // gives the whole part only.'},
+{c:'print(7 % 2)',o:'1',cap:'% is the remainder: 2 fits into 7 three full times (6), and 1 is left over.'},
+{c:'n % 2 == 0',b:['Means n is even','ok'],cap:'That makes % the easy way to test for an even number.'}]},
+{t:'Curly quotes',k:'“ ”',r:'Only straight quotes work.',s:[
+{c:'print(“Hi”)',o:`SyntaxError: invalid character '“' (U+201C)`,e:1,cap:'Curly quotes copied from Word or PowerPoint cause a SyntaxError.'},
+{c:'print("Hi")',o:'Hi',cap:'After copying code from them, retype the quotes in your editor.'}]},
+{t:'Reading order',k:'Order',r:'Top to bottom, never ahead.',s:[
+{c:`print(x)\nx = 5`,o:`NameError: name (x) is not defined`,e:1,cap:'Python reads top to bottom, one line at a time, and never looks ahead.'},
+{c:`x = 5\nprint(x)`,o:'5',cap:'Create the name first, then use it.'}]},
+{t:'Symbols',k:'Symbols',r:'Small marks, big meanings.',s:[
+{s:[R('+','add, or join text','2 + 3 → 5'),R('-','subtract','5 - 2 → 3'),R('*','multiply','2 * 3 → 6'),R('/','divide (decimal)','7 / 2 → 3.5')],cap:'Math symbols.'},
+{s:[R('( )','run it, or group','print("Hi")'),R('[ ]','list, or position','nums[0]'),R(':','open a block','if x > 1:'),R(',','separate items','print(1, 2)'),R('.','use a tool','"Ali".lower()')],cap:'Symbols that build the structure of your code.'},
+{s:[R('"','text','"Hi"'),R(`'`,'text',`'Hi'`),R(String.fromCharCode(92),'escape','"a'+String.fromCharCode(92)+'nb" → new line'),R('#','note, ignored','# a note')],cap:'Symbols for text and notes.'},
+{s:[R('>','greater than','3 > 2 → True'),R('<','less than','3 < 2 → False')],cap:'Comparison symbols answer True or False.'}]}
+];
+var H=[215,240,265,290,315,195,175,225,250,280,305,330,200];function R(a,b,c){return String(a).padEnd(5)+String(b).padEnd(20)+c}
+var esc=function(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')};
+var fmt=function(s){return esc(s).replace(/«/g,'<span class="eq">').replace(/»/g,'</span>')};
+var st=document.getElementById('stage'),cap=document.getElementById('cap'),bar=document.getElementById('bar'),tabs=document.getElementById('tabs'),T=null,tb=[],li=0,R=document.documentElement.style;
+function accent(k){var d=matchMedia('(prefers-color-scheme:dark)').matches&&document.documentElement.dataset.theme!=='light',h=H[k];
+ R.setProperty('--store','hsl('+h+',78%,'+(d?68:42)+'%)');R.setProperty('--store-soft','hsl('+h+','+(d?45:80)+'%,'+(d?22:92)+'%)');
+ R.setProperty('--glow','hsla('+h+',80%,'+(d?65:45)+'%,'+(d?.24:.16)+')')}
+function build(x){var h='',t=.4;
+ if(x.c)h+='<div class="code'+(x.c.indexOf('\n')>-1?' sm':'')+'">'+fmt(x.c)+'</div>';
+ if(x.s)h+='<div class="steps">'+x.s.map(function(s){t+=1.4;return '<div class="pop" style="--d:'+t+'s">'+fmt(s)+'</div>'}).join('')+'</div>';
+ if(x.o){t+=1.4;h+='<div class="out'+(x.e?' err':'')+' pop" style="--d:'+t+'s"><small>Output</small>'+fmt(x.o)+'</div>'}
+ if(x.b){t+=1.4;h+='<div class="badge '+x.b[1]+' pop" style="--d:'+t+'s">'+fmt(x.b[0])+'</div>'}
+ return {h:h,d:Math.max(6000,(t+3)*1000)}}
+function show(l,n,off,keep){off=off||0;clearTimeout(T);li=l;var o=L[l],card=n===0,x=card?null:o.s[n-1],b;accent(l);
+ if(card){b={h:'<div class="num pop">'+(l+1)+'</div><div class="ttl pop" style="--d:.3s">'+esc(o.t)+'</div><div class="line"></div><div class="rule pop" style="--d:.9s">'+fmt(o.r)+'</div>',d:3800};cap.textContent='Lesson '+(l+1)+' of '+L.length}
+ else{b=build(x);cap.textContent=x.cap}
+ st.innerHTML=b.h;
+ tb.forEach(function(e,k){e.classList.toggle('on',k===l)});
+ if(off)st.getAnimations({subtree:true}).forEach(function(a){a.currentTime=off});var g=flat[idx(l,n)],rem=b.d-off;bar.style.transition='none';bar.style.width=((g.st+off)/TOT*100)+'%';void bar.offsetWidth;
+ cur={t0:Date.now(),d:rem,l:l,n:n,e:(g.st+b.d)/TOT*100};var hold=keep?paused:false;setP(hold);if(!hold){bar.style.transition='width '+rem+'ms linear';bar.style.width=cur.e+'%';T=setTimeout(next,rem)}}
+L.forEach(function(o,k){var e=document.createElement('button');e.textContent=(k+1)+'. '+o.k;e.title=o.t;e.onclick=function(){show(k,0)};tb.push(e);tabs.appendChild(e)});
+document.getElementById('replay').onclick=function(){show(li,0)};
+var cur={},paused=false,pp=document.getElementById('pp');
+function next(){var l=cur.l,n=cur.n;if(n<L[l].s.length)show(l,n+1);else if(l<L.length-1)show(l+1,0)}
+function setP(v){paused=v;document.body.classList.toggle('hold',v);pp.textContent=v?'▶ Play':'⏸ Pause'}
+function toggle(){if(!cur.d)return;if(!paused){clearTimeout(T);cur.d=Math.max(0,cur.d-(Date.now()-cur.t0));bar.style.transition='none';bar.style.width=getComputedStyle(bar).width;setP(true)}else{setP(false);cur.t0=Date.now();bar.style.transition='width '+cur.d+'ms linear';bar.style.width=cur.e+'%';T=setTimeout(next,cur.d)}}
+pp.onclick=toggle;
+document.addEventListener('keydown',function(e){if(e.code==='Space'&&e.target.tagName!=='BUTTON'){e.preventDefault();toggle()}});
+document.getElementById('all').onclick=function(){show(0,0)};
+var flat=[],TOT=0;
+L.forEach(function(o,l){[{n:0,d:3800}].concat(o.s.map(function(x,i){return {n:i+1,d:build(x).d}})).forEach(function(e){e.l=l;e.st=TOT;TOT+=e.d;flat.push(e)})});
+function idx(l,n){for(var i=0;i<flat.length;i++)if(flat[i].l===l&&flat[i].n===n)return i}
+var sc=document.querySelector('.bar'),drag=false,was=false;
+sc.tabIndex=0;sc.setAttribute('role','slider');sc.setAttribute('aria-label','Video timeline');sc.title='Drag to go back or forward';
+L.forEach(function(o,l){var k=document.createElement('span');k.className='tk';k.style.left=(flat[idx(l,0)].st/TOT*100)+'%';sc.appendChild(k)});
+function at(e){var r=sc.getBoundingClientRect();return Math.min(TOT-1,Math.max(0,(e.clientX-r.left)/r.width*TOT))}
+function go(ms){var i=0;while(i<flat.length-1&&flat[i+1].st<=ms)i++;var f=flat[i],off=ms-f.st;if(f.l===cur.l&&f.n===cur.n){st.getAnimations({subtree:true}).forEach(function(a){a.currentTime=off});cur.d=f.d-off;bar.style.transition='none';bar.style.width=(ms/TOT*100)+'%'}else show(f.l,f.n,off,true)}
+sc.addEventListener('pointerdown',function(e){e.preventDefault();drag=true;was=!paused;paused=true;clearTimeout(T);setP(true);sc.setPointerCapture(e.pointerId);sc.classList.add('drag');go(at(e))});
+sc.addEventListener('pointermove',function(e){if(drag)go(at(e))});
+function up(){if(!drag)return;drag=false;sc.classList.remove('drag');if(was)toggle()}
+sc.addEventListener('pointerup',up);sc.addEventListener('pointercancel',up);
+sc.addEventListener('keydown',function(e){var d=e.key==='ArrowRight'?5000:e.key==='ArrowLeft'?-5000:0;if(!d)return;e.preventDefault();var w=!paused,ms=bar.getBoundingClientRect().width/sc.getBoundingClientRect().width*TOT+d;ms=Math.min(TOT-1,Math.max(0,ms));if(w){clearTimeout(T);paused=true;setP(true)}go(ms);if(w)toggle()});
+show(0,0);
+</script>
+</body>
+</html>
